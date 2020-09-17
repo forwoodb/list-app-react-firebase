@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import firebase from '../firebase.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import NavBar from './NavBar.js';
+
 export default class Main extends Component {
   constructor() {
     super()
@@ -15,9 +17,9 @@ export default class Main extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const newItem = {
-      id_item: Number(Date.now()),
       item: e.target.elements.text.value,
       edit: false,
+      user: this.props.user ? this.props.user : 'demo',
     }
     this.setState({
       items: this.state.items.concat(newItem),
@@ -31,6 +33,13 @@ export default class Main extends Component {
 
       let list = [];
 
+      let user;
+      if (this.props.user) {
+        user = this.props.user;
+      } else {
+        user = 'demo';
+      }
+
       // snapshot.forEach((item) => {
       //   list.push(item.val())
       // });
@@ -38,11 +47,14 @@ export default class Main extends Component {
       // Alternatively:
       let data = snapshot.val();
       for (let item in data) {
-        list.push({
-          id: item,
-          item: data[item].item,
-          edit: data[item].edit,
-        })
+        if (data[item].user === user) {
+          list.push({
+            id: item,
+            item: data[item].item,
+            edit: data[item].edit,
+            user: data[item].user,
+          })
+        }
       }
 
       this.setState({
@@ -101,6 +113,11 @@ export default class Main extends Component {
   render() {
     return (
       <div className="container">
+        <NavBar
+          user={this.props.user}
+          login={this.props.login}
+          logout={this.props.logout}
+        />
         <div className="row">
           <div className="col"></div>
           <div className="col-6">
