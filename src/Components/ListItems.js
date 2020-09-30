@@ -3,9 +3,9 @@ import firebase from '../firebase.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Link} from 'react-router-dom';
 
-export default class Main extends Component {
-  constructor() {
-    super()
+export default class ListItems extends Component {
+  constructor(props) {
+    super(props)
     this.state = {
       items: [],
     }
@@ -13,21 +13,8 @@ export default class Main extends Component {
     this.deleteItem = this.deleteItem.bind(this);
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-    const newItem = {
-      item: e.target.elements.text.value,
-      edit: false,
-      user: this.props.user ? this.props.user : 'demo',
-    }
-    this.setState({
-      items: this.state.items.concat(newItem),
-    })
-    firebase.database().ref('items').push(newItem)
-  }
-
   componentDidMount() {
-    firebase.database().ref('items').on('value', (snapshot) => {
+    firebase.database().ref('lists/' + this.props.match.params.id).on('value', (snapshot) => {
       // console.log(snapshot.val());
 
       let list = [];
@@ -57,7 +44,7 @@ export default class Main extends Component {
       }
 
       this.setState({
-        items: list
+        items: list,
       })
     });
   }
@@ -107,6 +94,20 @@ export default class Main extends Component {
       marginTop: '50px',
       marginBottom: '50px',
     };
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const newItem = {
+      id: new Date(),
+      item: e.target.elements.text.value,
+      edit: false,
+      user: this.props.user ? this.props.user : 'demo',
+    }
+    this.setState({
+      items: this.state.items.concat(newItem),
+    })
+    firebase.database().ref('lists/' + this.props.match.params.id).push(newItem)
   }
 
   render() {
