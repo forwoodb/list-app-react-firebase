@@ -58,6 +58,20 @@ export default class Main extends Component {
     firebase.database().ref('lists/' + delList).remove();
   }
 
+  editItem(eList) {
+    // console.log(eItem);
+    this.setState({
+      lists: this.state.lists.map((list) => {
+        if (list.id === eList) {
+          list.edit = !list.edit
+          // console.log(item);
+
+        }
+        return list;
+      })
+    })
+  }
+
   viewList(vList) {
     // console.log(vList);
     this.setState({
@@ -104,6 +118,26 @@ export default class Main extends Component {
     e.preventDefault();
     const newList = {
       list: e.target.elements.text.value,
+      items: [
+        {
+          id: 1,
+          item: 'item 1',
+          edit: false,
+          user: this.props.user ? this.props.user : 'demo',
+        },
+        {
+          id: 2,
+          item: 'item 2',
+          edit: false,
+          user: this.props.user ? this.props.user : 'demo',
+        },
+        {
+          id: 3,
+          item: 'item 3',
+          edit: false,
+          user: this.props.user ? this.props.user : 'demo',
+        },
+      ],
       edit: false,
       user: this.props.user ? this.props.user : 'demo',
     }
@@ -171,6 +205,9 @@ export default class Main extends Component {
                                 >
                                   Delete
                                 </button>
+                              </td>
+                              <td className="text-center">
+                                <button className="btn btn-primary" onClick={() => this.editItem(list.id)}>Edit</button>
                               </td>
                               <td className="text-center">
                                 <Link to={'/View/' + list.id}>

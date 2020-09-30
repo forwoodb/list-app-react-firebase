@@ -45,13 +45,14 @@ export default class ListItems extends Component {
 
       this.setState({
         items: list,
+        // items: data.items,
       })
     });
   }
 
   deleteItem(delItem) {
     console.log(delItem);
-    firebase.database().ref('items/' + delItem).remove();
+    firebase.database().ref('lists/' + this.props.match.params.id).child(delItem).remove();
   }
 
   editItem(eItem) {
@@ -108,9 +109,11 @@ export default class ListItems extends Component {
       items: this.state.items.concat(newItem),
     })
     firebase.database().ref('lists/' + this.props.match.params.id).push(newItem)
+    // firebase.database().ref('lists/' + this.props.match.params.id).child('items').push(newItem)
   }
 
   render() {
+    console.log(this.state.items);
     return (
       <div className="container">
         <h1 className="text-center">List</h1>
