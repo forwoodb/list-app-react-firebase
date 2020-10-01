@@ -159,11 +159,11 @@ export default class Main extends Component {
           <Route exact path="/">
             <h1 className="text-center">Create List</h1>
             <form onSubmit={this.handleSubmit} style={this.getStyle()}>
-              <div className="form-group">
+              <div className="input-group-sm mb-3">
                 <input className="form-control" name="text"/>
               </div>
               <div className="form-group">
-                <button className="btn btn-success">Add</button>
+                <button className="btn btn-success btn-sm">Add</button>
               </div>
             </form>
             <table className="table table-sm">

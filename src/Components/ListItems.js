@@ -117,70 +117,64 @@ export default class ListItems extends Component {
     return (
       <div className="container">
         <h1 className="text-center">List</h1>
-        <div className="row">
-          <div className="col"></div>
-          <div className="col-6">
-            <form onSubmit={this.handleSubmit} style={this.getStyle()}>
-              <div className="form-group">
-                <input className="form-control" name="text"/>
-              </div>
-              <div className="form-row">
-                <div className="form-group">
-                  <button className="btn btn-success">Add Item</button>
-                </div>
-                <div className="form-group ml-4">
-                  <Link to={'/'}>
-                    <button className="btn btn-primary">Update List</button>
-                  </Link>
-                </div>
-              </div>
-            </form>
-            <table className="table">
-            <thead>
-              <tr>
-                <th className="text-center">Items</th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-              <tbody>
-                {
-                  this.state.items.map((item) => {
-                    if (item.edit) {
-                      return (
-                        <tr key={item.id}>
-                          <td className="text-center">
-                            <input className="text-center" name="update" value={item.item} onChange={this.handleUpdateChange}/>
-                          </td>
-                          <td className="text-center">
-                            <button className="btn btn-danger" onClick={() => this.deleteItem(item.id)}>Delete</button>
-                          </td>
-                          <td className="text-center">
-                            <button className="btn btn-success" onClick={() => this.updateItem(item.id)}>Done</button>
-                          </td>
-                        </tr>
-                      )
-                    } else {
-                      return (
-                        <tr key={item.id}>
-                          <td className="text-center"  width="240px">{item.item}</td>
-                          <td className="text-center">
-                            <button className="btn btn-danger" onClick={() => this.deleteItem(item.id)}>Delete</button>
-                          </td>
-                          <td className="text-center">
-                            <button className="btn btn-primary" onClick={() => this.editItem(item.id)}>Edit</button>
-                          </td>
-                        </tr>
-                      )
-                    }
-
-                  })
-                }
-              </tbody>
-            </table>
+        <form onSubmit={this.handleSubmit} style={this.getStyle()}>
+          <div className="input-group-sm mb-3">
+            <input className="form-control" name="text"/>
           </div>
-          <div className="col"></div>
-        </div>
+          <div className="form-row">
+            <div className="form-group">
+              <button className="btn btn-success btn-sm">Add Item</button>
+            </div>
+            <div className="form-group ml-4">
+              <Link to={'/'}>
+                <button className="btn btn-primary btn-sm">Update List</button>
+              </Link>
+            </div>
+          </div>
+        </form>
+        <table className="table table-sm">
+        <thead>
+          <tr>
+            <th className="text-center">Items</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+          <tbody>
+            {
+              this.state.items.map((item) => {
+                if (item.edit) {
+                  return (
+                    <tr key={item.id}>
+                      <td className="text-center">
+                        <input className="text-center" name="update" value={item.item} onChange={this.handleUpdateChange}/>
+                      </td>
+                      <td className="text-center">
+                        <button className="btn btn-danger btn-sm" onClick={() => this.deleteItem(item.id)}>Delete</button>
+                      </td>
+                      <td className="text-center">
+                        <button className="btn btn-success btn-sm" onClick={() => this.updateItem(item.id)}>Done</button>
+                      </td>
+                    </tr>
+                  )
+                } else {
+                  return (
+                    <tr key={item.id}>
+                      <td className="text-center"  width="240px">{item.item}</td>
+                      <td className="text-center">
+                        <button className="btn btn-danger btn-sm" onClick={() => this.deleteItem(item.id)}>Delete</button>
+                      </td>
+                      <td className="text-center">
+                        <button className="btn btn-primary btn-sm" onClick={() => this.editItem(item.id)}>Edit</button>
+                      </td>
+                    </tr>
+                  )
+                }
+
+              })
+            }
+          </tbody>
+        </table>
       </div>
     );
   }
