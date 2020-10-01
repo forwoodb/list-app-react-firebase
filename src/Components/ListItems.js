@@ -7,6 +7,7 @@ export default class ListItems extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      list: '',
       items: [],
     }
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -17,7 +18,7 @@ export default class ListItems extends Component {
     firebase.database().ref('lists/' + this.props.match.params.id).on('value', (snapshot) => {
       // console.log(snapshot.val());
 
-      let list = [];
+      let items = [];
 
       let user;
       if (this.props.user) {
@@ -34,7 +35,7 @@ export default class ListItems extends Component {
       let data = snapshot.val();
       for (let item in data) {
         if (data[item].user === user) {
-          list.push({
+          items.push({
             id: item,
             item: data[item].item,
             edit: data[item].edit,
@@ -44,7 +45,8 @@ export default class ListItems extends Component {
       }
 
       this.setState({
-        items: list,
+        list: data.list,
+        items: items,
         // items: data.items,
       })
     });
@@ -116,7 +118,7 @@ export default class ListItems extends Component {
     console.log(this.state.items);
     return (
       <div className="container">
-        <h1 className="text-center">List</h1>
+        <h2 className="text-center">{this.state.list}</h2>
         <form onSubmit={this.handleSubmit} style={this.getStyle()}>
           <div className="input-group-sm mb-3">
             <input className="form-control" name="text"/>
