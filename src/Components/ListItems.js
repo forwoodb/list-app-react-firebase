@@ -110,6 +110,7 @@ export default class ListItems extends Component {
     this.setState({
       items: this.state.items.concat(newItem),
     })
+    e.target.elements.text.value = '';
     firebase.database().ref('lists/' + this.props.match.params.id).push(newItem)
     // firebase.database().ref('lists/' + this.props.match.params.id).child('items').push(newItem)
   }

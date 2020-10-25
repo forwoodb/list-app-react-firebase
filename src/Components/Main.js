@@ -144,6 +144,7 @@ export default class Main extends Component {
     this.setState({
       lists: this.state.lists.concat(newList),
     })
+    e.target.elements.text.value = '';
     firebase.database().ref('lists').push(newList)
   }
 
@@ -185,9 +186,6 @@ export default class Main extends Component {
                             <input className="text-center" name="update" value={list.list} onChange={this.handleUpdateChange}/>
                           </td>
                           <td className="text-center">
-                            <button className="btn btn-danger btn-sm" onClick={() => this.deleteList(list.id)}>Delete</button>
-                          </td>
-                          <td className="text-center">
                             <button className="btn btn-success btn-sm" onClick={() => this.updateList(list.id)}>Done</button>
                           </td>
                         </tr>
@@ -197,12 +195,13 @@ export default class Main extends Component {
                         <tr key={list.id}>
                           <td className="text-center">{list.list}</td>
                           <td className="text-center">
-                            <button
-                              className="btn btn-danger btn-sm"
-                              onClick={() => this.deleteList(list.id)}
-                            >
-                              Delete
-                            </button>
+                            <Link to={'/View/' + list.id}>
+                              <button
+                                className="btn btn-success btn-sm"
+                              >
+                                View
+                              </button>
+                            </Link>
                           </td>
                           <td className="text-center">
                             <button
@@ -213,13 +212,12 @@ export default class Main extends Component {
                             </button>
                           </td>
                           <td className="text-center">
-                            <Link to={'/View/' + list.id}>
-                              <button
-                                className="btn btn-success btn-sm"
-                              >
-                                View
-                              </button>
-                            </Link>
+                            <button
+                              className="btn btn-danger btn-sm"
+                              onClick={() => this.deleteList(list.id)}
+                            >
+                              Delete
+                            </button>
                           </td>
                         </tr>
                       )
