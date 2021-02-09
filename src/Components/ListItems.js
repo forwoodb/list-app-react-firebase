@@ -147,6 +147,7 @@ export default class ListItems extends Component {
           <Collection
             collection={this.state.items}
             entry="item"
+            style={this.getStyle()}
           />
         </table>
       </div>
