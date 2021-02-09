@@ -3,6 +3,8 @@ import firebase from '../firebase.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Link} from 'react-router-dom';
 
+import Collection from './Collection.js';
+
 export default class ListItems extends Component {
   constructor(props) {
     super(props)
@@ -142,42 +144,52 @@ export default class ListItems extends Component {
             <th></th>
           </tr>
         </thead>
-          <tbody>
-            {
-              this.state.items.map((item) => {
-                if (item.edit) {
-                  return (
-                    <tr key={item.id}>
-                      <td className="text-center">
-                        <input className="text-center" name="update" value={item.item} onChange={this.handleUpdateChange}/>
-                      </td>
-                      <td className="text-center">
-                        <button className="btn btn-success btn-sm" onClick={() => this.updateItem(item.id)}>Done</button>
-                      </td>
-                      <td className="text-center">
-                        <button className="btn btn-danger btn-sm" onClick={() => this.deleteItem(item.id)}>Delete</button>
-                      </td>
-                    </tr>
-                  )
-                } else {
-                  return (
-                    <tr key={item.id}>
-                      <td className="text-center"  width="240px">{item.item}</td>
-                      <td className="text-center">
-                        <button className="btn btn-primary btn-sm" onClick={() => this.editItem(item.id)}>Edit</button>
-                      </td>
-                      <td className="text-center">
-                        <button className="btn btn-danger btn-sm" onClick={() => this.deleteItem(item.id)}>Delete</button>
-                      </td>
-                    </tr>
-                  )
-                }
-
-              })
-            }
-          </tbody>
+          <Collection
+            collection={this.state.items}
+            entry="item"
+          />
         </table>
       </div>
     );
   }
 }
+
+// <tbody>
+//   {
+//     this.state.items.map((item) => {
+//       if (item.edit) {
+//         return (
+//           <tr key={item.id}>
+//             <td className="text-center">
+//               <input
+//                 className="text-center"
+//                 name="update"
+//                 value={item.item}
+//                 onChange={this.handleUpdateChange}
+//               />
+//             </td>
+//             <td className="text-center">
+//               <button className="btn btn-success btn-sm" onClick={() => this.updateItem(item.id)}>Done</button>
+//             </td>
+//             <td className="text-center">
+//               <button className="btn btn-danger btn-sm" onClick={() => this.deleteItem(item.id)}>Delete</button>
+//             </td>
+//           </tr>
+//         )
+//       } else {
+//         return (
+//           <tr key={item.id}>
+//             <td className="text-center"  width="240px">{item.item}</td>
+//             <td className="text-center">
+//               <button className="btn btn-primary btn-sm" onClick={() => this.editItem(item.id)}>Edit</button>
+//             </td>
+//             <td className="text-center">
+//               <button className="btn btn-danger btn-sm" onClick={() => this.deleteItem(item.id)}>Delete</button>
+//             </td>
+//           </tr>
+//         )
+//       }
+//
+//     })
+//   }
+// </tbody>

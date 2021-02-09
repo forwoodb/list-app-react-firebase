@@ -5,7 +5,7 @@ import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 
 import NavBar from './NavBar.js';
 import ListItems from './ListItems.js';
-// import Collection from './Collection.js';
+import Collection from './Collection.js';
 
 export default class Main extends Component {
   constructor() {
@@ -51,6 +51,7 @@ export default class Main extends Component {
       this.setState({
         lists: collection,
       })
+      console.log(collection);
     });
   }
 
@@ -111,26 +112,6 @@ export default class Main extends Component {
     e.preventDefault();
     const newList = {
       list: e.target.elements.text.value,
-      items: [
-        {
-          id: 1,
-          item: 'item 1',
-          edit: false,
-          user: this.props.user ? this.props.user : 'demo',
-        },
-        {
-          id: 2,
-          item: 'item 2',
-          edit: false,
-          user: this.props.user ? this.props.user : 'demo',
-        },
-        {
-          id: 3,
-          item: 'item 3',
-          edit: false,
-          user: this.props.user ? this.props.user : 'demo',
-        },
-      ],
       edit: false,
       user: this.props.user ? this.props.user : 'demo',
     }
@@ -189,63 +170,10 @@ export default class Main extends Component {
                 <th></th>
               </tr>
             </thead>
-              <tbody>
-                {
-                  this.state.lists.map((list) => {
-                    if (list.edit) {
-                      return (
-                        <tr key={list.id}>
-                          <td className="text-center">
-                          <form id="update" onSubmit={(e) => this.handleUpdateSubmit(list.id, e)}>
-                            <input
-                              className="text-center"
-                              name="update"
-                              value={list.list}
-                              onChange={(e) => this.handleUpdateChange(list.id, e)}
-                            />
-                          </form>
-                          </td>
-                          <td className="text-center">
-                            <button className="btn btn-success btn-sm" form="update" value="submit">Done</button>
-                          </td>
-                        </tr>
-                      )
-                    } else {
-                      return (
-                        <tr key={list.id}>
-                          <td className="text-center">{list.list}</td>
-                          <td className="text-center">
-                            <Link to={'/View/' + list.id}>
-                              <button
-                                className="btn btn-success btn-sm"
-                              >
-                                View
-                              </button>
-                            </Link>
-                          </td>
-                          <td className="text-center">
-                            <button
-                              className="btn btn-primary btn-sm"
-                              onClick={() => this.editItem(list.id)}
-                            >
-                              Edit
-                            </button>
-                          </td>
-                          <td className="text-center">
-                            <button
-                              className="btn btn-danger btn-sm"
-                              onClick={() => this.deleteList(list.id)}
-                            >
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                      )
-                    }
-
-                  })
-                }
-              </tbody>
+              <Collection
+                collection={this.state.lists}
+                entry="list"
+              />
             </table>
           </Route>
           <Route path={'/View/:id'} exact component={ListItems}/>
