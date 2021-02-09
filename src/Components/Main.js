@@ -6,7 +6,6 @@ import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import NavBar from './NavBar.js';
 import ListItems from './ListItems.js';
 import Collection from './Collection.js';
-import ViewButton from './ViewButton.js';
 
 export default class Main extends Component {
   constructor() {
@@ -165,17 +164,16 @@ export default class Main extends Component {
             <table className="table table-sm">
             <thead>
               <tr>
-              <th></th>
                 <th className="text-center">Lists</th>
+                <th></th>
                 <th></th>
                 <th></th>
               </tr>
             </thead>
-            <Collection
-              collection={this.state.lists}
-              entry="list"
-              onSubmit={(e) => this.handleUpdateSubmit(list.id, e)}
-            />
+              <Collection
+                collection={this.state.lists}
+                entry="list"
+              />
             </table>
           </Route>
           <Route path={'/View/:id'} exact component={ListItems}/>

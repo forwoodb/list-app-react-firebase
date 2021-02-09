@@ -19,6 +19,7 @@ export default class Collection extends Component {
       <tbody>
         {
           collection.map((list) => {
+            console.log(list[entry]);
             if (list.edit) {
               return (
                 <tr key={list.id}>
@@ -39,39 +40,40 @@ export default class Collection extends Component {
               )
             } else {
               return (
-                  <tr key={list.id}>
-                    <td className="text-center">{list[entry]}</td>
-                    <td className="text-center">
-                      <Link to={'/View/' + list.id}>
-                        <button
-                          className="btn btn-success btn-sm"
-                        >
-                          View
-                        </button>
-                      </Link>
-                    </td>
-                    <td className="text-center">
+                <tr key={list.id}>
+                  <td className="text-center">{list[entry]}</td>
+                  <td className="text-center">
+                    <Link to={'/View/' + list.id}>
                       <button
-                        className="btn btn-primary btn-sm"
-                        onClick={() => this.editItem(list.id)}
+                        className="btn btn-success btn-sm"
                       >
-                        Edit
+                        View
                       </button>
-                    </td>
-                    <td className="text-center">
-                      <button
-                        className="btn btn-danger btn-sm"
-                        onClick={() => this.deleteList(list.id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
+                    </Link>
+                  </td>
+                  <td className="text-center">
+                    <button
+                      className="btn btn-primary btn-sm"
+                      onClick={() => this.editItem(list.id)}
+                    >
+                      Edit
+                    </button>
+                  </td>
+                  <td className="text-center">
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => this.deleteList(list.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
               )
             }
+
           })
         }
       </tbody>
-    )
+    );
   }
 }
