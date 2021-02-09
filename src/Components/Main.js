@@ -13,14 +13,15 @@ export default class Main extends Component {
     this.state = {
       lists: [],
     }
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleNewSubmit = this.handleNewSubmit.bind(this);
+    this.handleUpdateSubmit = this.handleUpdateSubmit.bind(this);
     this.deleteList = this.deleteList.bind(this);
+    this.editItem = this.editItem.bind(this);
+    this.handleUpdateChange = this.handleUpdateChange.bind(this);
   }
 
   componentDidMount() {
     firebase.database().ref('lists').on('value', (snapshot) => {
-      // console.log(snapshot.val());
-
       let collection = [];
 
       let user;
@@ -54,7 +55,7 @@ export default class Main extends Component {
   }
 
   deleteList(delList) {
-    console.log(delList);
+    // console.log(delList);
     firebase.database().ref('lists/' + delList).remove();
   }
 
@@ -86,25 +87,17 @@ export default class Main extends Component {
     })
   }
 
-  handleUpdateChange(e) {
+  handleUpdateChange(listId, e) {
     this.setState({
-      list: e.target.value
-    })
-
-  }
-
-  updateList(uList) {
-    console.log(uList);
-    this.setState({
-      lists: this.state.lists.map((list) => {
-        if (list.id === uList) {
-          list.edit = !list.edit
-          console.log(list);
-
+      list: this.state.lists.map((list) => {
+        if (list.id === listId) {
+          // console.log(listId);
+          list.list = e.target.value
         }
         return list;
       })
     })
+
   }
 
   getStyle() {
@@ -114,7 +107,7 @@ export default class Main extends Component {
     };
   }
 
-  handleSubmit(e) {
+  handleNewSubmit(e) {
     e.preventDefault();
     const newList = {
       list: e.target.elements.text.value,
@@ -148,6 +141,26 @@ export default class Main extends Component {
     firebase.database().ref('lists').push(newList)
   }
 
+  handleUpdateSubmit(uList, e) {
+    e.preventDefault();
+    const updateList = {
+      list: e.target.elements.update.value,
+      edit: false,
+      user: this.props.user ? this.props.user : 'demo',
+    }
+    this.setState({
+      lists: this.state.lists.map((list) => {
+        if (list.id === uList) {
+          list.edit = !list.edit
+          // console.log(list);
+
+        }
+        return list;
+      })
+    })
+    firebase.database().ref('lists/' + uList).update(updateList)
+  }
+
   render() {
     return (
       <div className="container">
@@ -159,7 +172,7 @@ export default class Main extends Component {
           />
           <Route exact path="/">
             <h1 className="text-center">Create List</h1>
-            <form onSubmit={this.handleSubmit} style={this.getStyle()}>
+            <form onSubmit={this.handleNewSubmit} style={this.getStyle()}>
               <div className="input-group-sm mb-3">
                 <input className="form-control" name="text"/>
               </div>
@@ -183,10 +196,17 @@ export default class Main extends Component {
                       return (
                         <tr key={list.id}>
                           <td className="text-center">
-                            <input className="text-center" name="update" value={list.list} onChange={this.handleUpdateChange}/>
+                          <form id="update" onSubmit={(e) => this.handleUpdateSubmit(list.id, e)}>
+                            <input
+                              className="text-center"
+                              name="update"
+                              value={list.list}
+                              onChange={(e) => this.handleUpdateChange(list.id, e)}
+                            />
+                          </form>
                           </td>
                           <td className="text-center">
-                            <button className="btn btn-success btn-sm" onClick={() => this.updateList(list.id)}>Done</button>
+                            <button className="btn btn-success btn-sm" form="update" value="submit">Done</button>
                           </td>
                         </tr>
                       )

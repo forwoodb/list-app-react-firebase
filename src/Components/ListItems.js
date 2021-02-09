@@ -12,12 +12,13 @@ export default class ListItems extends Component {
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    this.editItem = this.editItem.bind(this);
+    this.handleUpdateChange = this.handleUpdateChange.bind(this);
+    this.updateItem = this.updateItem.bind(this);
   }
 
   componentDidMount() {
     firebase.database().ref('lists/' + this.props.match.params.id).on('value', (snapshot) => {
-      // console.log(snapshot.val());
-
       let items = [];
 
       let user;
@@ -49,6 +50,7 @@ export default class ListItems extends Component {
         items: items,
         // items: data.items,
       })
+      console.log(items);
     });
   }
 
@@ -58,13 +60,10 @@ export default class ListItems extends Component {
   }
 
   editItem(eItem) {
-    // console.log(eItem);
     this.setState({
       items: this.state.items.map((item) => {
         if (item.id === eItem) {
           item.edit = !item.edit
-          // console.log(item);
-
         }
         return item;
       })
@@ -116,7 +115,7 @@ export default class ListItems extends Component {
   }
 
   render() {
-    console.log(this.state.items);
+    // console.log(this.state.items);
     return (
       <div className="container">
         <h2 className="text-center">{this.state.list}</h2>
@@ -153,10 +152,10 @@ export default class ListItems extends Component {
                         <input className="text-center" name="update" value={item.item} onChange={this.handleUpdateChange}/>
                       </td>
                       <td className="text-center">
-                        <button className="btn btn-danger btn-sm" onClick={() => this.deleteItem(item.id)}>Delete</button>
+                        <button className="btn btn-success btn-sm" onClick={() => this.updateItem(item.id)}>Done</button>
                       </td>
                       <td className="text-center">
-                        <button className="btn btn-success btn-sm" onClick={() => this.updateItem(item.id)}>Done</button>
+                        <button className="btn btn-danger btn-sm" onClick={() => this.deleteItem(item.id)}>Delete</button>
                       </td>
                     </tr>
                   )
@@ -165,10 +164,10 @@ export default class ListItems extends Component {
                     <tr key={item.id}>
                       <td className="text-center"  width="240px">{item.item}</td>
                       <td className="text-center">
-                        <button className="btn btn-danger btn-sm" onClick={() => this.deleteItem(item.id)}>Delete</button>
+                        <button className="btn btn-primary btn-sm" onClick={() => this.editItem(item.id)}>Edit</button>
                       </td>
                       <td className="text-center">
-                        <button className="btn btn-primary btn-sm" onClick={() => this.editItem(item.id)}>Edit</button>
+                        <button className="btn btn-danger btn-sm" onClick={() => this.deleteItem(item.id)}>Delete</button>
                       </td>
                     </tr>
                   )
